@@ -42,3 +42,31 @@ namespace CRUDSederhana
             //Fokus Kembali kenim agar user siap memasukkan data baru
             txtNIM.Focus();
         }
+
+        private void LoadData()
+        {
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            try
+            {
+                conn.Open();
+                string query = "Select NIM, Nama, Email, Telepon, " +
+                    "Alamat from Mahasiswa";
+                MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                dgvMahasiswa.AutoGenerateColumns = true;
+                dgvMahasiswa.DataSource = dt;
+
+                ClearForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error: " +
+                    ex.Message, "Kesalahan",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                    );
+            }
+        }
