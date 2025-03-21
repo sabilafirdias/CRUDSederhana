@@ -70,3 +70,56 @@ namespace CRUDSederhana
                     );
             }
         }
+
+        private void btnTambah_Click_1(object sender, EventArgs e)
+        {
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            try
+            {
+                if (txtNIM.Text == "" || txtNama.Text == "" || txtEmail.Text == "" || txtTelepon.Text == "")
+                {
+                    MessageBox.Show(
+                        "Harap isi semua data!", "Peringatan",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+                conn.Open();
+                string query = "insert into Mahasiswa (NIM, Nama, Email, Telepon, Alamat) values (@NIM, @Nama, @Email, @Telepon, @Alamat)";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
+                cmd.Parameters.AddWithValue("@Nama", txtNama.Text);
+                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@Telepon", txtTelepon.Text);
+                cmd.Parameters.AddWithValue("@Alamat", txtAlamat.Text);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show(
+                        "Data berhasil ditambahkan!", "Sukses",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                        );
+                    LoadData();
+                    ClearForm();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Data tidak berhasil ditambahkan!", "Kesalahan",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                        );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error: " +
+                    ex.Message, "Kesalahan",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                    );
+            }
+        }
